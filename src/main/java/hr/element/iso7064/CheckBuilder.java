@@ -5,7 +5,6 @@ import hr.element.iso7064.impl.CheckProcess;
 import java.util.Locale;
 
 public class CheckBuilder {
-
     protected final String name;
     protected final CheckAlgorithm algorithm;
     protected final int length;

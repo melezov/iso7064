@@ -1,17 +1,16 @@
 package hr.element.iso7064.impl;
 
-import static hr.element.iso7064.CheckResultType.*;
 import hr.element.iso7064.Check;
 import hr.element.iso7064.CheckAlgorithm;
 import hr.element.iso7064.CheckBuilder;
 import hr.element.iso7064.CheckResult;
 import hr.element.iso7064.CheckResultType;
 
+import static hr.element.iso7064.CheckResultType.*;
+
 import java.util.ResourceBundle;
 
-public class CheckProcess
-        implements Check {
-
+public class CheckProcess implements Check {
     protected final CheckBuilder checkBuilder;
     protected final ResourceBundle messages;
     protected final CheckAlgorithm checkAlgorithm;

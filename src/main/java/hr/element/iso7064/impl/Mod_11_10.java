@@ -2,9 +2,7 @@ package hr.element.iso7064.impl;
 
 import hr.element.iso7064.CheckAlgorithm;
 
-public enum Mod_11_10
-        implements CheckAlgorithm {
-
+public enum Mod_11_10 implements CheckAlgorithm {
     INSTANCE;
 
     @Override

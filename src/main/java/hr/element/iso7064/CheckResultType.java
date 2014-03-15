@@ -1,7 +1,6 @@
 package hr.element.iso7064;
 
 public enum CheckResultType {
-
     SUCCESS(true, false),
     EMPTY(false, false),
     NON_DIGIT_CHARACTERS(false, false),

@@ -1,7 +1,6 @@
 package hr.element.iso7064;
 
 public class CheckResult {
-
     protected final CheckResultType type;
     protected final String message;
 
