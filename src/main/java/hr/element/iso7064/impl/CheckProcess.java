@@ -9,6 +9,7 @@ import hr.element.iso7064.CheckResultType;
 import static hr.element.iso7064.CheckResultType.*;
 
 import java.util.ResourceBundle;
+import java.util.regex.Pattern;
 
 public class CheckProcess implements Check {
     protected final CheckBuilder checkBuilder;
@@ -38,6 +39,9 @@ public class CheckProcess implements Check {
                 : INVALID_CHECKSUM);
     }
 
+    private static final Pattern WHITESPACE_PATTERN =
+            Pattern.compile("^\\s*?(\\d+?)\\s*$");
+
     @Override
     public CheckResult check(final String code) {
         try {
@@ -45,9 +49,8 @@ public class CheckProcess implements Check {
                 return buildResult(EMPTY);
             }
 
-            final char[] chars
-                    = (checkBuilder.getTrimWhitespaces()
-                    ? code.trim()
+            final char[] chars = (checkBuilder.getTrimWhitespaces()
+                    ? WHITESPACE_PATTERN.matcher(code).replaceFirst("$1")
                     : code).toCharArray();
 
             final int[] digits = new int[chars.length];
@@ -62,13 +65,13 @@ public class CheckProcess implements Check {
                 digits[index] = c - '0';
             }
 
-            final int lengthDelta = checkBuilder.getLength() - digits.length;
+            final int lengthDelta = digits.length - checkBuilder.getLength();
 
             if (lengthDelta == 0) {
                 return performValidation(digits);
             }
 
-            if (lengthDelta > 0) {
+            if (lengthDelta < 0) {
                 return buildResult(INSUFFICIENT_DIGITS, digits.length, checkBuilder.getLength());
             }
 
@@ -76,7 +79,7 @@ public class CheckProcess implements Check {
                 return buildResult(SURPLUS_DIGITS, digits.length, checkBuilder.getLength());
             }
 
-            for (int index = lengthDelta; index > 1; index--) {
+            for (int index = 0; index < lengthDelta; index++) {
                 if (digits[index] != 0) {
                     return buildResult(SURPLUS_DIGITS, digits.length, checkBuilder.getLength());
                 }
@@ -84,7 +87,7 @@ public class CheckProcess implements Check {
 
             final int[] offsetDigits = new int[checkBuilder.getLength()];
             System.arraycopy(digits, lengthDelta, offsetDigits, 0, offsetDigits.length);
-            return performValidation(digits);
+            return performValidation(offsetDigits);
         } catch (final Throwable t) {
             return buildResult(UNKNOWN_ERROR, t.getMessage());
         }

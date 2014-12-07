@@ -9,20 +9,14 @@ public enum Mod_11_10 implements CheckAlgorithm {
     public boolean validate(final int[] digits) {
         int a = 10;
 
-        for (int x = 0; x < digits.length - 1; x++) {
+        final int end = digits.length - 1;
+        for (int x = 0; x < end; x++) {
             a = (a + digits[x]) % 10;
-            if (a == 0) {
-                a = 10;
-            }
-            a <<= 1;
-            a = a % 11;
+            if (a == 0) a = 10;
+            a = (a << 1) % 11;
         }
 
-        int control = 11 - a;
-        if (control == 10) {
-            control = 0;
-        }
-
+        final int control = a == 1 ? 0 : 11 - a;
         final int last = digits[digits.length - 1];
 
         return last == control;
